@@ -9,8 +9,22 @@ def is_int(x):
 	for j in ints:
 		if j == x:
 			return True
-
-a = 0
+	return False
+def change(x):
+	ret = ''
+	if len(x.split(' ')) < 3:
+		if x.split(' ')[0] == 'inc':
+			ret = 'dec ' + " ".join(x.split(' ')[1:])
+		else:
+			ret = 'inc ' + " ".join(x.split(' ')[1:])
+	else:
+		if x.split(' ')[0] == 'jnz':
+			ret = 'cpy ' + " ".join(x.split(' ')[1:])
+		else:
+			ret = 'jnz ' + " ".join(x.split(' ')[1:])
+	return ret
+import time
+a = 7
 b = 0
 c = 0
 d = 0
@@ -79,7 +93,16 @@ while count < len(puzzle):
 		else:
 			d -= 1
 	elif i.split(' ')[0] == 'jnz':
-		if (is_int(i.split(' ')[1][0]) and i.split(' ')[1] != '0'):
+		if (is_int(i.split(' ')[1][0]) and not is_int(i.split(' ')[2])):
+			if i.split(' ')[2] == 'a':
+				count += a
+			elif i.split(' ')[2] == 'b':
+				count += b
+			elif i.split(' ')[2] == 'c':
+				count += c
+			elif i.split(' ')[2] == 'd':
+				count += d
+		elif (is_int(i.split(' ')[1][0]) and i.split(' ')[1] != '0'):
 			count += int(i.split(' ')[2]) - 1
 		elif (i.split(' ')[1] == 'a' and a != 0):
 			count += int(i.split(' ')[2]) - 1
@@ -89,6 +112,8 @@ while count < len(puzzle):
 			count += int(i.split(' ')[2]) - 1
 		elif (i.split(' ')[1] == 'd' and d != 0):
 			count += int(i.split(' ')[2]) - 1
+	else:
+		if count + c < len(puzzle):
+			puzzle[count + c] = change(puzzle[count + c])
 	count += 1
-	print count
 print a
